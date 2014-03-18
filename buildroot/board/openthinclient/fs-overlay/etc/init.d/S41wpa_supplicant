@@ -1,0 +1,31 @@
+#!/bin/sh
+#
+# Start the wireless network....
+#
+
+case "$1" in
+  start)
+ 	echo "Starting wireless..."
+    /sbin/ifup -a
+	sleep 2
+    /usr/sbin/wpa_supplicant -D wext -i wlan0 -c /etc/wpa_supplicant.conf -B \
+    && /usr/sbin/dhcpcd wlan0
+    sleep 5
+    pxe-kexec -n -f -w -l tcos 10.224.129.128
+	;;
+  stop)
+	echo -n "Stopping network..."
+    /usr/bin/killall dhcpcd
+	/usr/bin/killall wpa_supplicant
+	;;
+  restart|reload)
+	"$0" stop
+	"$0" start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+
