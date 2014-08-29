@@ -11,7 +11,7 @@ case "$1" in
     /usr/sbin/wpa_supplicant -D wext -i wlan0 -c /etc/wpa_supplicant.conf -B \
     && /usr/sbin/dhcpcd wlan0
     sleep 5
-    pxe-kexec -n -f -w -l tcos 10.224.129.128
+    pxe-kexec -n -f -w -l tcos 10.224.129.30
 	;;
   stop)
 	echo -n "Stopping network..."
